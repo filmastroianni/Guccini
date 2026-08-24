@@ -408,7 +408,13 @@ const METRICHE = [
 let D = null, metrica = METRICHE[0], albumAttivo = null, parolaAttiva = null;
 
 const tip = $("#tooltip");
-const mostraTip = (e, html) => { tip.innerHTML = html; tip.style.opacity = 1;
+/* sui dispositivi touch il tap non è un vero passaggio del mouse: senza
+   questo controllo i popup comparirebbero cliccando e resterebbero
+   "appiccicati", perché non c'è un vero mouseleave che li richiuda */
+const haHover = () => window.matchMedia("(hover: hover)").matches;
+const mostraTip = (e, html) => {
+  if (!haHover()) return;
+  tip.innerHTML = html; tip.style.opacity = 1;
   const x = Math.min(e.clientX + 14, innerWidth - 236);
   tip.style.left = x + "px"; tip.style.top = (e.clientY + 16) + "px"; };
 const nascondiTip = () => { tip.style.opacity = 0; };
